@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="EventRadar: Wide-Area Kilometric UAV Detection via Propeller-Aware Sensing">
+  <meta name="keywords" content="Event Camera, Counter-UAV, Long-range Detection, Gimbal Tracking, Propeller Sensing">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[SenSys 2026 Demo] EventRadar: Wide-Area Kilometric UAV Detection via Propeller-Aware Sensing</title>
+
+  <link rel="stylesheet" href="./static/vendor/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/eventradar.css">
+</head>
+<body>
+  <nav class="navbar eventradar-nav" role="navigation" aria-label="main navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item brand-mark" href="#top">EventRadar</a>
+      </div>
+      <div class="navbar-menu is-active">
+        <div class="navbar-end">
+          <a class="navbar-item" href="#abstract">Motivation</a>
+          <a class="navbar-item" href="#system">System</a>
+          <a class="navbar-item" href="#experiments">Experiments</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <section class="hero publication-hero">
+      <div class="hero-body">
+        <div class="container is-max-desktop has-text-centered">
+          <p class="venue">ACM/IEEE SenSys 2026 Demo Submission #10</p>
+          <h1 class="title is-1 publication-title">
+            EventRadar: Wide-Area Kilometric UAV Detection via Propeller-Aware Sensing
+          </h1>
+
+          <div class="publication-authors">
+            <p>
+              <span class="author-line">Zhiting Zhou<sup>1,*</sup>, Wenhua Ding<sup>1,*</sup>, Julia Gersey<sup>2</sup>, Xinglin Yu<sup>3</sup></span>
+              <span class="author-line">Xingchen Liu<sup>4</sup>, Haoyang Wang<sup>1</sup>, Jingao Xu<sup>5</sup>, Pei Zhang<sup>2</sup>, Xinlei Chen<sup>1,&dagger;</sup></span>
+            </p>
+            <p class="affiliations">
+              <span class="affiliation-line"><sup>1</sup>Shenzhen International Graduate School, Tsinghua University, China; <sup>2</sup>University of Michigan, USA</span>
+              <span class="affiliation-line"><sup>3</sup>Harbin Institute of Technology, Shenzhen, China; <sup>4</sup>Sun Yat-sen University, China; <sup>5</sup>The University of Hong Kong, China</span>
+            </p>
+          </div>
+
+          <div class="hero-metrics" aria-label="Key results">
+            <div>
+              <strong>1.5 km</strong>
+              <span>tested detection range</span>
+            </div>
+            <div>
+              <strong>60x</strong>
+              <span>mAP over RGB baseline at 300 m</span>
+            </div>
+            <div>
+              <strong>&lt;2%</strong>
+              <span>relative weight-estimation error</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section teaser-section">
+      <div class="container is-max-widescreen">
+        <div class="columns is-centered">
+          <div class="column is-10">
+            <video class="main-video" controls muted playsinline preload="metadata" poster="./static/images/demo-封面.jpg">
+              <source src="./static/videos/demo_5.10.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="abstract">
+      <div class="container is-max-desktop">
+        <div class="section-heading is-centered">
+          <h2 class="title is-3 section-title">Motivation</h2>
+        </div>
+        <div class="content body-copy">
+          <p>
+            In <strong>urban civilian airspace</strong>, small rotor UAVs have become a major illegal-flight concern: they are flexible, low-cost, and can appear near airports or public infrastructure with little warning. Radar and radio-frequency monitoring are often hard to miniaturize and may introduce <strong>electromagnetic interference</strong>, motivating a sensing system that is <strong>passive, discreet, and easy to deploy</strong>.
+          </p>
+          <p>
+            A practical counter-UAV system must provide <strong>early warning</strong>, support <strong>threat assessment</strong>, and maintain <strong>wide-area coverage</strong>. At <strong>kilometer-scale range</strong>, these goals collide: the drone may shrink to only a few pixels, useful signals are buried in noise, and a long-focus lens creates a narrow field of view where targets are easily lost.
+          </p>
+          <p>
+            EventRadar addresses this tension through <strong>propeller-aware sensing</strong>. It treats <strong>propeller rotational speed</strong> as a bridge from hidden flight command and payload to observable high-frequency event footprints, enabling long-range detection, RPM-based inference, and active gimbal tracking in one pipeline.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section system-intro" id="system">
+      <div class="container is-max-widescreen">
+        <div class="section-heading is-centered">
+          <h2 class="title is-3 section-title">System Introduction</h2>
+          <h3 class="section-subtitle">Propeller Speed as the Bridge Between Intrinsic and External</h3>
+          <p class="subtitle">
+            EventRadar treats the propeller as a physical signature: internal command and payload affect rotational speed,
+            while rotational speed determines observable event footprints and flight state.
+          </p>
+        </div>
+        <figure class="media-frame">
+          <img src="./static/images/overview.png" alt="EventRadar overview connecting propeller rotational speed, intrinsic inference, wide-area tracking, and long-range detection">
+        </figure>
+      </div>
+    </section>
+
+    <section class="section capability-section">
+      <div class="container is-max-widescreen">
+        <div class="system-card-grid">
+          <article class="system-card">
+            <div class="system-media">
+              <img src="./static/images/propeller-degradation.png" alt="Trading time for space through periodic propeller event signals">
+            </div>
+            <div class="system-copy">
+              <p class="capability-index">A</p>
+              <h3 class="title is-4">Long-Range Detection</h3>
+              <p>
+                When spatial shape fades to only a few pixels, EventRadar trades time for space. It uses microsecond event resolution to capture periodic propeller fluctuations and reconstruct sparse frequency signatures from noisy event streams.
+              </p>
+            </div>
+          </article>
+
+          <article class="system-card">
+            <div class="system-media">
+              <img src="./static/images/rpm-model.png" alt="Propeller RPM model for inferring drone weight and command">
+            </div>
+            <div class="system-copy">
+              <p class="capability-index">B</p>
+              <h3 class="title is-4">Intrinsic Inference</h3>
+              <p>
+                With estimated rotational speed &omega;, EventRadar links observation to physics. The thrust relation
+                T<sub>i</sub> &asymp; k<sub>T</sub>&omega;<sub>i</sub><sup>2</sup> enables payload and intent inference for interpretable threat assessment at long range.
+              </p>
+            </div>
+          </article>
+
+          <article class="system-card">
+            <div class="system-media">
+              <img src="./static/images/trailing-guidance.png" alt="Event trailing guidance for wide-area drone tracking">
+            </div>
+            <div class="system-copy">
+              <p class="capability-index">C</p>
+              <h3 class="title is-4">Wide-Area Tracking</h3>
+              <p>
+                A portable two-axis gimbal expands coverage despite the narrow long-lens field of view. Event trailing guidance estimates escape direction and speed from residual event traces, helping the gimbal recover fast-moving targets.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section experiment-section" id="experiments">
+      <div class="container is-max-widescreen">
+        <div class="section-heading is-centered">
+          <h2 class="title is-3 section-title">Experiment Demonstration</h2>
+          <h3 class="section-subtitle">From Kilometric Detection to Active Tracking</h3>
+          <p class="subtitle">
+            The demo validates EventRadar across detection, physical inference, and active tracking.
+          </p>
+        </div>
+
+        <div class="experiment-grid">
+          <article class="experiment-card">
+            <div class="experiment-media result-preview">
+              <img src="./static/images/300-detection-result.png" alt="300 meter drone detection result">
+            </div>
+            <div class="experiment-copy">
+              <p class="experiment-label">A. Km-Range Drone Detection</p>
+              <h3>Robust detection beyond conventional visual range</h3>
+              <p>
+                At <strong>300 m</strong>, EventRadar achieves about <strong>60x</strong> the mAP of an RGB baseline and <strong>18x</strong> that of an event-based baseline. It maintains stable detection and tracking up to <strong>1500 m</strong>.
+              </p>
+            </div>
+          </article>
+
+          <article class="experiment-card">
+            <div class="experiment-media result-preview">
+              <img src="./static/images/weight_result.png" alt="Drone weight estimation result">
+            </div>
+            <div class="experiment-copy">
+              <p class="experiment-label">B. Drone Weight Estimation</p>
+              <h3>Inferring payload through propeller RPM</h3>
+              <p>
+                Propeller RPM provides a measurable bridge to payload inference, keeping weight-estimation relative error within <strong>2%</strong> for interpretable threat assessment.
+              </p>
+            </div>
+          </article>
+
+          <article class="experiment-card">
+            <div class="experiment-media trailing-preview">
+              <img src="./static/images/trailing-guidance-cn.png" alt="Bilingual event trailing guidance diagram">
+            </div>
+            <div class="experiment-copy">
+              <p class="experiment-label">C. Active Drone Tracking</p>
+              <h3>Recovering targets from event trails</h3>
+              <p>
+                Low-latency event trails estimate escape direction and speed, guiding the gimbal to reacquire targets in a narrow field of view.
+              </p>
+            </div>
+          </article>
+        </div>
+
+        <div class="video-slot-grid" aria-label="Experiment videos">
+          <article class="video-slot-card">
+            <video class="video-slot" controls muted loop playsinline preload="metadata">
+              <source src="./static/videos/demo_5.10_A.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <p>Km-range drone detection video</p>
+          </article>
+          <article class="video-slot-card">
+            <video class="video-slot" controls muted loop playsinline preload="metadata">
+              <source src="./static/videos/demo_5.10_B.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <p>Drone weight estimation video</p>
+          </article>
+          <article class="video-slot-card">
+            <video class="video-slot" controls muted loop playsinline preload="metadata">
+              <source src="./static/videos/demo_5.10_C.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <p>Active drone tracking video</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container is-max-desktop has-text-centered">
+      <p>
+        EventRadar project page.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
